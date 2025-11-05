@@ -1,0 +1,52 @@
+module instruction_memory (
+    input  logic [31:0] addr,     // Dirección (PC)
+    output logic [31:0] instr     // Instrucción de 32 bits
+);
+
+    // Memoria ROM de instrucciones (máximo 256 instrucciones en este ejemplo)
+    logic [31:0] mem [0:255];
+
+    // Inicialización con instrucciones tipo R
+    initial begin
+        // add x3, x1, x2
+        mem[0] = 32'b0000000_00010_00001_000_00011_0110011;
+
+        // sub x4, x5, x6
+        mem[1] = 32'b0100000_00110_00101_000_00100_0110011;
+
+        // and x7, x8, x9
+        mem[2] = 32'b0000000_01001_01000_111_00111_0110011;
+
+        // or x10, x11, x12
+        mem[3] = 32'b0000000_01100_01011_110_01010_0110011;
+
+        // xor x13, x14, x15
+        mem[4] = 32'b0000000_01111_01110_100_01101_0110011;
+
+        // slt x16, x17, x18
+        mem[5] = 32'b0000000_10010_10001_010_10000_0110011;
+
+        // sll x19, x20, x21
+        mem[6] = 32'b0000000_10101_10100_001_10011_0110011;
+
+        // srl x22, x23, x24
+        mem[7] = 32'b0000000_11000_10111_101_10110_0110011;
+
+        // sra x25, x26, x27
+        mem[8] = 32'b0100000_11011_11010_101_11001_0110011;
+
+        // sltu x28, x29, x30
+        mem[9] = 32'b0000000_11110_11101_011_11100_0110011;
+
+        // Resto vacío (NOPs = ADDI x0,x0,0)
+        integer i;
+        for (i = 10; i < 256; i = i + 1) begin
+            mem[i] = 32'b00000000000000000000000000010011; 
+        end
+    end
+
+    // Lectura síncrona de instrucción
+    assign instr = mem[addr[9:2]]; 
+    // addr[9:2] porque cada instrucción es de 4 bytes (PC salta de 4 en 4)
+
+endmodule

@@ -1,0 +1,46 @@
+// ==============================================
+// ALU CONTROL UNIT - RISC-V Tipo R
+// ----------------------------------------------
+// Traduce opcode, funct3 y funct7 a ALUOp
+// Compatible con la ALU del proyecto
+// Autor: Asbel
+// Fecha: 2025
+// ==============================================
+
+module ALUControl (
+    input  logic [6:0] opcode,   // Campo de instrucción (bits 6:0)
+    input  logic [2:0] funct3,   // Campo funct3 (bits 14:12)
+    input  logic [6:0] funct7,   // Campo funct7 (bits 31:25)
+    output logic [3:0] ALUOp     // Código de operación para la ALU
+);
+
+    always_comb begin
+        // Valor por defecto (NOP)
+        ALUOp = 4'b1111;
+
+        // Solo procesamos instrucciones tipo R (opcode = 0110011)
+        if (opcode == 7'b0110011) begin
+            unique case (funct3)
+                3'b000: begin
+                    if (funct7 == 7'b0000000)
+                        ALUOp = 4'b0000; // ADD
+                    else if (funct7 == 7'b0100000)
+                        ALUOp = 4'b0001; // SUB
+                end
+                3'b111: ALUOp = 4'b0010; // AND
+                3'b110: ALUOp = 4'b0011; // OR
+                3'b100: ALUOp = 4'b0100; // XOR
+                3'b010: ALUOp = 4'b0101; // SLT
+                3'b001: ALUOp = 4'b0110; // SLL
+                3'b101: begin
+                    if (funct7 == 7'b0000000)
+                        ALUOp = 4'b0111; // SRL
+                    else if (funct7 == 7'b0100000)
+                        ALUOp = 4'b1000; // SRA
+                end
+                default: ALUOp = 4'b1111; // No definido
+            endcase
+        end
+    end
+
+endmodule

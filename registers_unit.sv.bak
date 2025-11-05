@@ -1,0 +1,38 @@
+module registers_unit (
+    input  logic        clk,       // Reloj
+    input  logic        rst_n,     // Reset activo en 0
+    input  logic        reg_write, // Habilita escritura
+    input  logic [4:0]  rs1,       // Dirección del registro fuente 1
+    input  logic [4:0]  rs2,       // Dirección del registro fuente 2
+    input  logic [4:0]  rd,        // Dirección del registro destino
+    input  logic [31:0] write_data,// Datos a escribir
+    output logic [31:0] read_data1,// Salida del registro fuente 1
+    output logic [31:0] read_data2 // Salida del registro fuente 2
+);
+
+    // 32 registros de 32 bits
+    logic [31:0] regfile [0:31];
+
+    // -----------------------------------
+    // Escritura síncrona
+    // -----------------------------------
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            // Reiniciar los registros a cero
+            integer i;
+            for (i = 0; i < 32; i++) begin
+                regfile[i] <= 32'b0;
+            end
+        end else if (reg_write && (rd != 5'd0)) begin
+            // No escribir en x0
+            regfile[rd] <= write_data;
+        end
+    end
+
+    // -----------------------------------
+    // Lectura asíncrona
+    // -----------------------------------
+    assign read_data1 = (rs1 == 5'd0) ? 32'b0 : regfile[rs1];
+    assign read_data2 = (rs2 == 5'd0) ? 32'b0 : regfile[rs2];
+
+endmodule

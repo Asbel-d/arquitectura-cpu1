@@ -1,0 +1,64 @@
+// ==============================================
+// ALU RISC-V (Tipo R) - Procesamiento por bytes
+// Compatible con ADD, SUB, AND, OR, XOR, SLT, SLL, SRL, SRA
+// ----------------------------------------------
+// Autor: Asbel
+// Fecha: 2025
+// ==============================================
+
+module ALU (
+    input  logic [31:0] A,        // Operando 1
+    input  logic [31:0] B,        // Operando 2
+    input  logic [3:0]  ALUOp,    // Control ALU
+    output logic [31:0] Result,   // Resultado final
+    output logic Zero              // Bandera Zero
+);
+
+    // División por bytes (8 bits)
+    logic [7:0] A0, A1, A2, A3;
+    logic [7:0] B0, B1, B2, B3;
+    logic [7:0] R0, R1, R2, R3;
+
+    assign {A3, A2, A1, A0} = A;
+    assign {B3, B2, B1, B0} = B;
+
+    always_comb begin
+        case (ALUOp)
+            4'b0000: begin // ADD
+                {R3, R2, R1, R0} = A + B;
+            end
+            4'b0001: begin // SUB
+                {R3, R2, R1, R0} = A - B;
+            end
+            4'b0010: begin // AND
+                R0 = A0 & B0; R1 = A1 & B1; R2 = A2 & B2; R3 = A3 & B3;
+            end
+            4'b0011: begin // OR
+                R0 = A0 | B0; R1 = A1 | B1; R2 = A2 | B2; R3 = A3 | B3;
+            end
+            4'b0100: begin // XOR
+                R0 = A0 ^ B0; R1 = A1 ^ B1; R2 = A2 ^ B2; R3 = A3 ^ B3;
+            end
+            4'b0101: begin // SLT (signed)
+                {R3, R2, R1, R0} = ($signed(A) < $signed(B)) ? 32'd1 : 32'd0;
+            end
+            4'b0110: begin // SLL (shift left logical)
+                {R3, R2, R1, R0} = A << B[4:0];
+            end
+            4'b0111: begin // SRL (shift right logical)
+                {R3, R2, R1, R0} = A >> B[4:0];
+            end
+            4'b1000: begin // SRA (shift right arithmetic)
+                {R3, R2, R1, R0} = $signed(A) >>> B[4:0];
+            end
+            default: begin
+                {R3, R2, R1, R0} = 32'd0;
+            end
+        endcase
+    end
+
+    // Resultado combinado
+    assign Result = {R3, R2, R1, R0};
+    assign Zero   = (Result == 32'd0);
+
+endmodule
