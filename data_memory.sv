@@ -12,7 +12,7 @@ module data_memory (
 
     integer i;
 
-    // Inicialización
+
     initial begin
         for (i = 0; i < 1024; i++) begin
             mem[i] = 8'h00;
