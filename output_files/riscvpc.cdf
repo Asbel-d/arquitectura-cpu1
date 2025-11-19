@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA5F31) Path("C:/Users/Asbel/Downloads/is614-main/single-cycle - copia/output_files/") File("riscvpc.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA5F31) Path("C:/Users/Asbel/Downloads/is614-main/arquitectura-cpu1/output_files/") File("riscvpc.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

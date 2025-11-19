@@ -1,0 +1,69 @@
+// text_buffer.sv
+// Simple module that builds an 80x30 text snapshot from cpu debug buses.
+// For simplicity this implementation updates the buffer every clock with formatted lines.
+// In synthesis we store as ROM-like memory that vga_renderer reads.
+module text_buffer (
+    input logic clk,
+    input logic rst_n,
+    input logic [31:0] pc,
+    input logic [31:0] instr,
+    input logic [1023:0] regs_flat, // snapshot of 32 regs
+    input logic [255:0] mem_sample
+);
+    // 80*30 = 2400 characters. We'll store as bytes.
+    reg [7:0] tb [0:2399];
+
+    integer i;
+    // On reset fill with spaces
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            for (i = 0; i < 2400; i = i + 1) tb[i] <= 8'h20; // space
+        end else begin
+            // Build a small summary in the top-left corner (we keep it simple)
+            // Line 0: "PC: 00000000  INSTR: 00000000"
+            tb[0]  <= "P"; tb[1]  <= "C"; tb[2]  <= ":"; tb[3]  <= " ";
+            // write hex digits for pc (8 hex chars) at pos 4..11
+            write_hex32_to_tb(pc, 4);
+            // space
+            tb[12] <= " ";
+            // "INSTR:"
+            tb[13] <= "I"; tb[14] <= "N"; tb[15] <= "S"; tb[16] <= "T"; tb[17] <= "R"; tb[18] <= ":"; tb[19] <= " ";
+            write_hex32_to_tb(instr, 20);
+            // Next rows: registers in hex small table starting at row 2 (index 160)
+            // We'll show first 8 registers in two columns for demo; full implementation can fill all.
+            // For brevity show x0..x7 across lines 2..5
+            for (i = 0; i < 8; i = i + 1) begin
+                integer base = 160 + i*10; // row 2+i, col 0
+                // "xN:"
+                tb[base+0] <= "x";
+                tb[base+1] <= hexdigit_ascii(i);
+                tb[base+2] <= ":"; tb[base+3] <= " ";
+                // extract reg i from regs_flat: each 32-bit chunk
+                // regs_flat[1023 - i*32 -: 32]
+                write_hex32_to_tb( regs_flat[ (1023 - i*32) -: 32 ], base+4 );
+            end
+            // other parts of buffer could be filled similarly (mem sample, etc.)
+        end
+    end
+
+    // helper tasks (synthesizable in SV)
+    task automatic write_hex32_to_tb(input logic [31:0] val, input int start_idx);
+        int k;
+        logic [3:0] nib;
+        for (k = 0; k < 8; k = k + 1) begin
+            nib = val[ (31 - k*4) -: 4 ];
+            tb[start_idx + k] <= hex_to_ascii(nib);
+        end
+    endtask
+
+    function automatic [7:0] hex_to_ascii(input logic [3:0] h);
+        if (h < 10) hex_to_ascii = "0" + h;
+        else hex_to_ascii = "A" + (h - 4'd10);
+    endfunction
+
+    function automatic [7:0] hexdigit_ascii(input int v);
+        if (v < 10) hexdigit_ascii = "0" + v;
+        else hexdigit_ascii = "A" + (v - 10);
+    endfunction
+
+endmodule

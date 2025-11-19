@@ -1,0 +1,55 @@
+// vga_timing.sv - simplified 640x480@60Hz timing with clock divider by 2
+module vga_timing (
+    input  wire clk,    // 50 MHz
+    input  wire rst_n,
+    output reg  [9:0] h_cnt,
+    output reg  [9:0] v_cnt,
+    output wire hsync,
+    output wire vsync,
+    output wire visible
+);
+    // We'll divide 50 MHz to ~25 MHz by toggling pixel_clk
+    reg pixel_clk;
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) pixel_clk <= 1'b0;
+        else pixel_clk <= ~pixel_clk;
+    end
+
+    // VGA 640x480 timing (standard)
+    localparam H_VISIBLE = 640;
+    localparam H_FRONT   = 16;
+    localparam H_SYNC    = 96;
+    localparam H_BACK    = 48;
+    localparam H_TOTAL   = H_VISIBLE + H_FRONT + H_SYNC + H_BACK; // 800
+
+    localparam V_VISIBLE = 480;
+    localparam V_FRONT   = 10;
+    localparam V_SYNC    = 2;
+    localparam V_BACK    = 33;
+    localparam V_TOTAL   = V_VISIBLE + V_FRONT + V_SYNC + V_BACK; // 525
+
+    reg [9:0] h, v;
+    always_ff @(posedge pixel_clk or negedge rst_n) begin
+        if (!rst_n) begin
+            h <= 0; v <= 0;
+        end else begin
+            if (h == H_TOTAL - 1) begin
+                h <= 0;
+                if (v == V_TOTAL - 1) v <= 0;
+                else v <= v + 1;
+            end else begin
+                h <= h + 1;
+            end
+        end
+    end
+
+    assign hsync = ~((h >= (H_VISIBLE+H_FRONT)) && (h < (H_VISIBLE+H_FRONT+H_SYNC))); // active low
+    assign vsync = ~((v >= (V_VISIBLE+V_FRONT)) && (v < (V_VISIBLE+V_FRONT+V_SYNC))); // active low
+    assign visible = (h < H_VISIBLE) && (v < V_VISIBLE);
+
+    always_comb begin
+        h_cnt = h;
+        v_cnt = v;
+    end
+
+endmodule

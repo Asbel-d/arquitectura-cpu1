@@ -40,7 +40,127 @@
 					"strict" : false
 				},
 				{
-					"name" : "display1[3]",
+					"name" : "LEDR[0]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[1]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[2]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[3]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[4]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[5]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[6]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[7]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[8]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDR[9]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[6]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_hsync",
+					"strict" : false
+				},
+				{
+					"name" : "vga_vsync",
+					"strict" : false
+				},
+				{
+					"name" : "vga_red[0]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_red[1]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_red[2]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_red[3]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_green[0]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_green[1]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_green[2]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_green[3]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_blue[0]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_blue[1]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_blue[2]",
+					"strict" : false
+				},
+				{
+					"name" : "vga_blue[3]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[0]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[1]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[2]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[3]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[4]",
+					"strict" : false
+				},
+				{
+					"name" : "display5[5]",
 					"strict" : false
 				},
 				{
@@ -84,6 +204,14 @@
 					"strict" : false
 				},
 				{
+					"name" : "display3[0]",
+					"strict" : false
+				},
+				{
+					"name" : "display3[1]",
+					"strict" : false
+				},
+				{
 					"name" : "display3[2]",
 					"strict" : false
 				},
@@ -92,11 +220,27 @@
 					"strict" : false
 				},
 				{
+					"name" : "display3[4]",
+					"strict" : false
+				},
+				{
 					"name" : "display3[5]",
 					"strict" : false
 				},
 				{
 					"name" : "display3[6]",
+					"strict" : false
+				},
+				{
+					"name" : "display4[0]",
+					"strict" : false
+				},
+				{
+					"name" : "display4[1]",
+					"strict" : false
+				},
+				{
+					"name" : "display4[2]",
 					"strict" : false
 				},
 				{
@@ -112,67 +256,15 @@
 					"strict" : false
 				},
 				{
-					"name" : "display5[0]",
+					"name" : "display4[6]",
 					"strict" : false
 				},
 				{
-					"name" : "display5[1]",
+					"name" : "display1[2]",
 					"strict" : false
 				},
 				{
-					"name" : "display5[2]",
-					"strict" : false
-				},
-				{
-					"name" : "display5[3]",
-					"strict" : false
-				},
-				{
-					"name" : "display5[4]",
-					"strict" : false
-				},
-				{
-					"name" : "display5[6]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[0]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[1]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[2]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[3]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[4]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[5]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[6]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[7]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[8]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[9]",
+					"name" : "display1[3]",
 					"strict" : false
 				},
 				{

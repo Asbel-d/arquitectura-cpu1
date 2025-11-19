@@ -1,0 +1,10 @@
+// font_rom.sv
+// font data: each character 16 bytes (8x16). font.hex should contain 256*16 = 4096 bytes hex lines
+module font_rom ();
+    // The vga_renderer will instantiate this module internally via $readmemh,
+    // or you can adapt to have explicit ports. For simplicity we keep it internal.
+    // Provide a file "font.hex" where each line is one byte in hex (00..FF)
+    initial begin
+        $display("font_rom: expecting font.hex in project folder (one byte per line, hex).");
+    end
+endmodule
